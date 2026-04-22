@@ -20,23 +20,25 @@ You will be building a standalone Task Manager. You must strictly follow the req
 
 Fill out the following table after completing both versions:
 
-| Dimension | Vibe Version | Pair Version |
-| :--- | :--- | :--- |
-| **Speed** | | |
-| **Control** | | |
-| **Code Quality** | | |
-| **Explainability** | | |
-| **Editability** | | |
+| Dimension      | Vibe Version (v0)                                        | Pair Version (Cursor)                                         |
+| -------------- | -------------------------------------------------------- | ------------------------------------------------------------- |
+| Speed          | Generated full app in 1 min 42 sec                       | Took 15–20 minutes with manual coding and setup               |
+| Control        | Limited control; structure and logic decided by the tool | Full control over components, state logic, and file structure |
+| Code Quality   | Some components were larger and less modular             | Smaller, modular components with clear separation of concerns |
+| Explainability | Harder to understand generated logic in some parts       | Easy to explain since each part was written step by step      |
+| Editability    | Changes require navigating multiple generated files      | Easy to edit due to simple and controlled structure           |
 
 ## When I Would Use Each Tool
 
-- 
-- 
+-Vibe coding tool for: rapid prototyping and MVP development  
+Reason: It generated a fully working application in 1 minute 42 seconds, making it ideal for quickly building demos and testing ideas without focusing on implementation details.
+
+-
 
 ## Tools Used
 
-- **Vibe tool used:** 
-- **Pair tool used:** 
+- **Vibe tool used:** V0
+- **Pair tool used:** Cursor
 
 ## How to Submit
 

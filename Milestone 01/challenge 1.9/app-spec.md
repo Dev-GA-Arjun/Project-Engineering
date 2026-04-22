@@ -1,32 +1,71 @@
-# Task Manager App Specification
+Task Manager App Specification
 
-This is the exact same feature set you must implement in both your vibe version and your pair version. Do not add extra features. Do not remove features. The comparison is only valid if both apps do the same thing.
+This document defines the exact feature set that must be implemented in both the vibe version and the pair version of the application.
 
-## Feature List
+The purpose of this assignment is to ensure a fair and accurate comparison between the two development approaches. Therefore, both versions must strictly follow the same requirements.
 
-1. **Add a task** — The user types a task title in an input field and clicks an "Add" button or presses the Enter key. The new task should then appear in the list.
-2. **Mark complete** — The user clicks on a task to toggle it between an active and completed state. Completed tasks must be visually distinct (e.g., using a strikethrough or a muted color).
-3. **Filter** — There should be three filter buttons: All, Active, and Completed. Clicking a filter should display only the tasks that match that specific status.
-4. **Task count** — A line below the list showing "X tasks remaining" that updates dynamically as tasks are completed or added.
+Core Features
+Add a Task
+Users can enter a task title in an input field.
+A task is added when:
+The user clicks the "Add" button, or
+Presses the Enter key.
+The newly added task should appear immediately in the task list.
 
-## What the UI Should Look Like
+Mark Task as Complete
+Users can click on a task to toggle its status:
+Active → Completed
+Completed → Active
+Completed tasks must be visually distinct:
+Example: strikethrough text or reduced opacity.
 
-The UI should be clean and functional. It should include:
-- A header with the app title.
-- An input area with an "Add" button.
-- The task list displayed below the input.
-- Filter buttons positioned either above or below the list.
-- The task count displayed at the very bottom.
+Filter Tasks
+Provide three filter options:
+All
+Active
+Completed
+Selecting a filter should update the visible task list accordingly.
 
-The app does not need to be complex or styled elaborately — it primarily needs to work correctly and follow the layout described.
+Task Counter
+Display a dynamic counter below the task list:
+Format: "X tasks remaining"
+The count should update automatically when:
+Tasks are added
+Tasks are marked as completed or active
 
-## What Does NOT Need to Be Built
+User Interface Requirements
 
-- **Persistence**: Tasks can reset on page refresh.
-- **Authentication**: No login or user accounts required.
-- **Backend**: No database or API integration needed.
-- **Routing**: This is a single-page application; no multiple pages or routes are necessary.
+The UI should be simple, clean, and functional. It must include:
 
-## Your Evaluation Goal
+A clear header/title for the app
+An input section with:
+Text input field
+Add button
+A task list displaying all tasks
+Filter controls (above or below the list)
+A task counter at the bottom
 
-Remember that you are not trying to build the best or most feature-rich app. Your goal is to build the exact same app twice so you can observe and compare how the two different AI approaches (Vibe vs. Pair) differ in their workflows, efficiency, and output.
+Out of Scope (Do NOT implement)
+
+To maintain consistency across both versions, the following features must NOT be included:
+
+Data persistence (tasks reset on refresh)
+Authentication (no login/signup)
+Backend or APIs
+Routing or multiple pages
+Objective of the Assignment
+
+The goal is not to build the most advanced application.
+
+Instead, the goal is to:
+
+Build the same application twice
+Use two different approaches:
+Vibe coding (full generation)
+AI pair programming (incremental development)
+Compare differences in:
+Speed
+Control
+Code quality
+Explainability
+Editability

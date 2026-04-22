@@ -1,45 +1,60 @@
--- PRODUCT QUERIES
--- These queries simulate common product requests in an application
-
--- Some of these queries will break after normalization.
--- Your job is to update them so they work with your improved schema.
+-- UPDATED PRODUCT QUERIES
+-- Compatible with normalized schema (3NF)
 
 -- Query 1
 -- Get all products
-
 SELECT * FROM products;
-
 
 
 -- Query 2
 -- Find products under a specific category
--- NOTE: This will break after normalization
 
-SELECT *
-FROM products
-WHERE categories LIKE '%Electronics%';
-
+SELECT p.*
+FROM products p
+JOIN product_categories pc ON p.product_id = pc.product_id
+JOIN categories c ON pc.category_id = c.id
+WHERE c.name = 'Electronics';
 
 
 -- Query 3
--- Find supplier details for a product
--- NOTE: supplier data currently lives inside products table
+-- Find supplier details for each product
 
-SELECT product_name, supplier_name, supplier_phone
-FROM products;
-
+SELECT 
+    p.product_name, 
+    s.name AS supplier_name, 
+    s.phone_number
+FROM products p
+JOIN suppliers s ON p.supplier_id = s.id;
 
 
 -- Query 4
 -- Find products with low stock
 
-SELECT product_name, stock_quantity
-FROM products
-WHERE stock_quantity < 10;
+SELECT 
+    p.product_name, 
+    i.stock_quantity
+FROM products p
+JOIN inventory i ON p.product_id = i.product_id
+WHERE i.stock_quantity < 10;
 
 
+-- (Optional Advanced)
+-- Query 5: Get products with their categories
 
--- TODO FOR LEARNERS
--- After normalizing the schema:
--- 1. Rewrite these queries using JOINs
--- 2. Ensure the same information can still be retrieved
+SELECT 
+    p.product_name,
+    c.name AS category
+FROM products p
+JOIN product_categories pc ON p.product_id = pc.product_id
+JOIN categories c ON pc.category_id = c.id;
+
+
+-- (Optional Advanced)
+-- Query 6: Get products with tags
+
+SELECT 
+    p.product_name,
+    t.name AS tag
+FROM products p
+JOIN product_tags pt ON p.product_id = pt.product_id
+JOIN tags t ON pt.tag_id = t.id;
