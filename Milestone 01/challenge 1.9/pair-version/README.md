@@ -6,7 +6,7 @@ This folder contains the task manager app built using an AI pair programming ass
 **Time to build:** 15 - 20 mins
 **Suggestions accepted:** 32
 **Suggestions rejected:** 2
-**Live URL:** [replace with your deployment URL]
+**Live URL:** [Link](https://taske-manager.vercel.app/)
 
 ## Notes
 

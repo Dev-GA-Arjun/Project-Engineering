@@ -25,7 +25,7 @@ This folder contains the task manager app built using a vibe coding tool.
 
                     Do not over-engineer. Keep components small and readable.
 
-**Live URL:** [replace with your deployment URL]
+**Live URL:** [Link](https://task-manager-frontend-on-vercel.vercel.app/)
 
 ## Notes
 
