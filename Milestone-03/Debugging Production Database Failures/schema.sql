@@ -17,7 +17,7 @@ CREATE TABLE customers (
 -- The customer_id column should have a REFERENCES customers(id) constraint, but it's missed here.
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
-    customer_id INTEGER, -- NO FOREIGN KEY!
+    customer_id INTEGER (customer_id) REFERENCES (customers) ON DELETE SET NULL, -- NO FOREIGN KEY!
     status VARCHAR(20) DEFAULT 'pending',
     total DECIMAL(10,2) DEFAULT 0.00,
     created_at TIMESTAMPTZ DEFAULT NOW()
