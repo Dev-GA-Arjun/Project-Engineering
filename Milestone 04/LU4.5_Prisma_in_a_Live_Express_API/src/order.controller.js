@@ -1,36 +1,68 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+// order.controller.js
+const prisma = require('./lib/db');
 
-async function purchaseItem(req, res) {
+// POST /orders/purchase
+const purchaseItem = async (req, res) => {
+  const { userId, productId } = req.body;
+
   try {
-    const { userId, productId } = req.body;
+    const result = await prisma.$transaction(async (tx) => {
 
-    const product = await prisma.product.findUnique({ where: { id: productId } });
-    console.log('Product price:', product.price); 
+      const product = await tx.product.findUnique({
+        where: { id: productId }
+      });
 
-    const order = await prisma.order.create({
-      data: { userId, productId, quantity: 1 },
+      if (!product) {
+        throw new Error('Product not found');
+      }
+
+      if (product.stock <= 0) {
+        throw new Error('Out of stock');
+      }
+
+      // Create order
+      const order = await tx.order.create({
+        data: {
+          userId,
+          productId,
+          quantity: 1
+        }
+      });
+
+      // Decrement stock
+      await tx.product.update({
+        where: { id: productId },
+        data: {
+          stock: { decrement: 1 }
+        }
+      });
+
+      return order;
     });
 
-    await prisma.product.update({
-      where: { id: productId },
-      data: { stock: { decrement: 1 } },
-    });
+    res.status(201).json(result);
 
-    res.status(201).json({ order });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(400).json({ error: err.message });
   }
-}
+};
 
-async function getOrdersByUser(req, res) {
+// GET /orders/:userId
+const getOrdersByUser = async (req, res) => {
   try {
     const userId = parseInt(req.params.userId);
-    const orders = await prisma.order.findMany({ where: { userId } });
+
+    const orders = await prisma.order.findMany({
+      where: { userId },
+      include: {
+        product: true
+      }
+    });
+
     res.json(orders);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Failed to fetch orders' });
   }
-}
+};
 
 module.exports = { purchaseItem, getOrdersByUser };
