@@ -1,26 +1,33 @@
-const { Pool } = require('pg');
-const { PrismaClient } = require('@prisma/client');
+// product.controller.js
+const prisma = require('./lib/db');
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const prisma = new PrismaClient();
-
-async function getProducts(req, res) {
+// GET /products
+const getProducts = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM products');
-    res.json(result.rows);
+    const products = await prisma.product.findMany();
+    res.json(products);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Failed to fetch products' });
   }
-}
+};
 
-async function getProductById(req, res) {
+// GET /products/:id
+const getProductById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const product = await prisma.product.findUnique({ where: { id } });
-    res.json({ name: product.name, price: product.price });
+
+    const product = await prisma.product.findUnique({
+      where: { id }
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json(product);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Error fetching product' });
   }
-}
+};
 
 module.exports = { getProducts, getProductById };
