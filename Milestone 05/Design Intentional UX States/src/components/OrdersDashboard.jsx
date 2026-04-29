@@ -97,7 +97,7 @@ function ErrorState({ message, onRetry }) {
           <div style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-primary)' }}>Something went wrong</div>
           <div style={{ color: 'var(--text-secondary)', maxWidth: 340, fontSize: 14, fontFamily: 'var(--mono)' }}>
             {/* TODO: Display the actual error message here */}
-            Error message goes here
+            {message}
           </div>
           {/* TODO: Implement the Retry button — call onRetry when clicked */}
           <button onClick={onRetry} style={{
@@ -145,7 +145,22 @@ export default function OrdersDashboard() {
   useEffect(() => {
     loadOrders()
   }, [])
-
+  const spinnerStyle = {
+    width: '40px',
+    height: '40px',
+    border: '4px solid #F59E0B',
+    borderTop: '4px solid #333',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite'
+  };
+    const miniSpinnerStyle = {
+    width: '20px',
+    height: '20px',
+    border: '3px solid #F59E0B',
+    borderTop: '3px solid #333',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite'
+  };
   // DASHBOARD STATS (already implemented — do not change)
   const totalRevenue   = orders.reduce((s, o) => s + (o.status !== 'Cancelled' ? o.amount : 0), 0)
   const delivered      = orders.filter(o => o.status === 'Delivered').length
@@ -175,9 +190,9 @@ export default function OrdersDashboard() {
       {/* ── STAT CARDS ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 32 }}>
         {[
-          { label: 'Total Revenue',    value: loading ? '—' : `₹${totalRevenue.toLocaleString()}`, icon: '💰', color: 'var(--accent)'  },
-          { label: 'Delivered',        value: loading ? '—' : delivered,                            icon: '✅', color: 'var(--green)'  },
-          { label: 'Needs Attention',  value: loading ? '—' : pending,                              icon: '⏳', color: 'var(--purple)' },
+          { label: 'Total Revenue',    value: loading ? <div style={{ display: 'flex'}}><div style={miniSpinnerStyle}></div></div> : `₹${totalRevenue.toLocaleString()}`, icon: '💰', color: 'var(--accent)'  },
+          { label: 'Delivered',        value: loading ? <div style={{ display: 'flex'}}><div style={miniSpinnerStyle}></div></div> : delivered,                            icon: '✅', color: 'var(--green)'  },
+          { label: 'Needs Attention',  value: loading ? <div style={{ display: 'flex'}}><div style={miniSpinnerStyle}></div></div> : pending,                              icon: '⏳', color: 'var(--purple)' },
         ].map((card, i) => (
           <div key={i} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '24px 28px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
@@ -203,6 +218,8 @@ export default function OrdersDashboard() {
         </div>
 
         <div style={{ overflowX: 'auto' }}>
+          {loading ? <div style={{ display: 'flex',flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '400px'}}><div style={spinnerStyle}></div><h2 style={{ marginTop: '15px' }}>Loading...</h2></div>:  error ? ( <table style={{ width: '100%', borderCollapse: 'collapse' }}><tbody><ErrorState message={error} onRetry={loadOrders} /></tbody></table>) :
+          orders.length === 0 ? <h2 style={{color: 'var(--text-secondary)', display: 'flex', justifyContent: 'center', marginTop: '100px', marginBottom: '100px' }}>No Oders Yet</h2> : 
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border)' }}>
@@ -222,27 +239,17 @@ export default function OrdersDashboard() {
                *  block below with proper conditional rendering
                *  for all 4 UX states.
                * ═══════════════════════════════════════════════ */}
-
-              {/* 🔴 PLACEHOLDER — DELETE THIS ENTIRE BLOCK AND REPLACE IT */}
-              <tr>
-                <td colSpan={6} style={{ padding: 32 }}>
-                  <div style={{ background: 'var(--surface-2)', border: '1px dashed var(--border)', borderRadius: 8, padding: 24 }}>
-                    <p style={{ color: 'var(--accent)', fontWeight: 600, marginBottom: 8, fontFamily: 'var(--mono)', fontSize: 13 }}>
-                      🚧 TODO: Implement the 4 UX states here
-                    </p>
-                    <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 12 }}>
-                      Current raw data dump (replace with proper UI):
-                    </p>
-                    <pre style={{ color: 'var(--text-secondary)', fontSize: 11, fontFamily: 'var(--mono)', lineHeight: 1.6, overflowX: 'auto' }}>
-                      {JSON.stringify({ loading, error, ordersCount: orders.length }, null, 2)}
-                    </pre>
-                  </div>
-                </td>
-              </tr>
-              {/* 🔴 END OF PLACEHOLDER */}
-
+              {orders.map(order => <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                <td style={{ textAlign: 'left', padding: '12px 20px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{order.id}</td>
+                <td style={{ textAlign: 'left', padding: '12px 20px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{order.customer}</td>
+                <td style={{ textAlign: 'left', padding: '12px 20px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{order.product}</td>
+                <td style={{ textAlign: 'left', padding: '12px 20px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{order.amount}</td>
+                <td style={{ textAlign: 'left', padding: '12px 20px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{order.status}</td>
+                <td style={{ textAlign: 'left', padding: '12px 20px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{order.date}</td>
+                <td style={{ textAlign: 'left', padding: '12px 20px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{order.item}</td>
+              </tr>)}
             </tbody>
-          </table>
+          </table>}
         </div>
       </div>
 

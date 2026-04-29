@@ -10,7 +10,7 @@
 //   'empty'    — returns an empty array (no orders)
 //   'error'    — rejects with an error (tests error state)
 
-export const SIMULATE = 'success'  // ← Change this to test each state
+export const SIMULATE = 'error'  // ← Change this to test each state
 
 const MOCK_ORDERS = [
   { id: 'ORD-9041', customer: 'Anika Sharma',    product: 'Pro Mechanical Keyboard',  amount: 6999,  status: 'Delivered', date: '2024-12-10', items: 1 },
